@@ -9,6 +9,7 @@ const NavBar = () => {
         singout()
         .then(()=>{
           alert('logout')
+          localStorage.removeItem('car-doctor')
         })
         .catch(error => error)
        }

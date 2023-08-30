@@ -6,6 +6,7 @@ import SingUp from "../Pages/SingUp/SingUp";
 import ChackOut from "../Pages/ChackOut/ChackOut";
 import Bookings from "../Pages/Bookings/Bookings";
 import Private from "../Private/Private";
+import Error from "../Pages/Error/Error";
 
 const router = createBrowserRouter([
     {
@@ -26,13 +27,17 @@ const router = createBrowserRouter([
           },
         {
             path: '/chackout/:id',
-            element: <ChackOut></ChackOut>,
+            element: <Private><ChackOut></ChackOut></Private>,
             loader:({params})=>fetch(`http://localhost:3000/services/${params.id}`)
           },
           {
             path:"/bookings",
             element:<Private><Bookings></Bookings></Private>
 
+          },
+          {
+            path:'*',
+            element:<Error></Error>
           }
       ]
     },

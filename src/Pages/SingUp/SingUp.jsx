@@ -1,10 +1,13 @@
 // eslint-disable-next-line no-unused-vars
 import React, { useContext } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import SingUpImage from '../../assets/images/login/login.svg'
 import { AuthContext } from '../../AuthProvider/AuthProvider';
 const SingUp = () => {
     const {createAccount}=useContext(AuthContext)
+    const navigate=useNavigate()
+    let location = useLocation();
+    const from=location.state?.from?.pathname||'/'
     const handelSingUp=(event)=>{
         event.preventDefault()
         const form=event.target;
@@ -16,6 +19,7 @@ const SingUp = () => {
         .then((userCredential)=>{
             const user = userCredential.user;
             console.log(user)
+            navigate(from,{replace:true})
         })
         .catch((error)=>{
             console.log(error)

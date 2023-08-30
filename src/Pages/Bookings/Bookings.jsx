@@ -8,10 +8,15 @@ const Bookings = () => {
     const [bookings, setbooking] = useState([])
     const url = `http://localhost:3000/bookings?email=${user.email}`
     useEffect(() => {
-        fetch(url)
+        fetch(url,{
+            method:"GET",
+            headers:{
+                authorize:`Bearer ${localStorage.getItem('car-doctor')}`
+            }
+        })
             .then(res => res.json())
             .then(data => setbooking(data))
-    }, [])
+    }, [url])
     return (
         <>
             <div className="overflow-x-auto">

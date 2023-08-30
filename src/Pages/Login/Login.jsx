@@ -1,10 +1,13 @@
 // eslint-disable-next-line no-unused-vars
 import React, { useContext } from 'react';
 import LoginImg from '../../assets/images/login/login.svg'
-import { Link } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../AuthProvider/AuthProvider';
 const Login = () => {
     const {singIn}=useContext(AuthContext)
+    const navigate=useNavigate()
+    let location = useLocation();
+    const from=location.state?.from?.pathname||'/'
  const handellogin=(event)=>{
     event.preventDefault()
     const form=event.target;
@@ -14,7 +17,26 @@ const Login = () => {
     singIn(email,password)
     .then((userCredential)=>{
         const user = userCredential.user;
-        console.log(user)
+        const loogedUser={
+            email: user.email
+        }
+        console.log(loogedUser)
+       
+        fetch('http://localhost:3000/jwt',{
+            method:"POST",
+            headers:{
+                "Content-Type": "application/json",
+            },
+            body:JSON.stringify(loogedUser)
+        })
+        .then(res => res.json())
+        .then(data => {
+            console.log(data)
+            // not best reson local store
+            localStorage.setItem('car-doctor',data.token)
+            navigate(from,{replace:true})
+        })
+
     })
     .catch((error)=>{
         console.log(error)
